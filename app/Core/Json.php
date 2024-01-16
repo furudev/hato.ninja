@@ -6,12 +6,7 @@ namespace Core;
 
 class JSON
 {
-  public function __construct()
-  {
-    header('Content-Type: application/json');
-  }
-
-  public function response(mixed $data)
+  public static function response(mixed $data)
   {
     echo json_encode($data);
     exit();

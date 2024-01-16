@@ -24,16 +24,15 @@ function base_path($path)
   return BASE_PATH . $path;
 }
 
-function abort($code = 404): void
+function abort($code = 403): void
 {
   http_response_code($code);
 
-  $json = new JSON();
   $data = [
-    'message' => 'Not found',
-    'status' => Response::NOT_FOUND,
+    'message' => 'Not allowed',
+    'status' => Response::FORBIDDEN,
   ];
 
-  $json->response($data);
+  JSON::response($data);
   die();
 }

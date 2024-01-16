@@ -4,6 +4,7 @@ const BASE_PATH = __DIR__ . '/';
 
 use Core\Router;
 
+require_once BASE_PATH . 'config.php';
 require_once BASE_PATH . 'Core/functions.php';
 
 spl_autoload_register(function ($class) {

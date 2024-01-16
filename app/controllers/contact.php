@@ -10,6 +10,4 @@ $data = [
   'status'  => Response::OK,
 ];
 
-$json = new JSON();
-
-return $json->response($data);
+return JSON::response($data);
