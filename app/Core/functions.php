@@ -19,12 +19,12 @@ function urlIs(string $value): bool
   return $_SERVER['REQUEST_URI'] === $value;
 }
 
-function base_path($path)
+function base_path(string $path): string
 {
   return BASE_PATH . $path;
 }
 
-function abort($code = 403): void
+function abort(int $code = 403): void
 {
   http_response_code($code);
 
@@ -33,6 +33,15 @@ function abort($code = 403): void
     'status' => Response::FORBIDDEN,
   ];
 
-  JSON::response($data);
+  $json = new JSON();
+
+  $json->response($data);
   die();
+}
+
+function view(string $path, array $attributes = []): void
+{
+  extract($attributes);
+
+  require_once base_path("views/$path");
 }
