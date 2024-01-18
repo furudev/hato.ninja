@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-use Core\JSON;
-use Core\Response;
+namespace App\Core;
+
+use App\Core\JSON;
+use App\Core\Response;
 
 function dd(mixed $value): void
 {
@@ -24,12 +26,11 @@ function base_path(string $path): string
   return BASE_PATH . $path;
 }
 
-function abort(int $code = 403): void
+function abort(int $code = 404): void
 {
   http_response_code($code);
 
   $data = [
-    'message' => 'Not allowed',
     'status' => Response::FORBIDDEN,
   ];
 
