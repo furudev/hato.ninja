@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form | Hato.ninja</title>
+  <title>Form | <?php echo $_ENV['APP_NAME'] ?></title>
 </head>
 <!--
   text: name;

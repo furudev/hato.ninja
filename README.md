@@ -12,7 +12,9 @@
 - [x] add form validation
 - [x] add form honeypot
 - [ ] refactor MessageController (_extract validation to the separate Validator class_)
-- [ ] add PHPMailer
-- [ ] connect PHPMailer with MessageController
+- [x] add PHPMailer
+- [x] add XOAUTH2 to connect with Gmail API
+- [x] send test e-mail message via Gmail account
+- [x] connect PHPMailer with MessageController
 - [ ] cleanup routes
-- [ ] send test e-mail message
+- [x] send test e-mail message
