@@ -1,12 +1,14 @@
 # 🐦‍⬛ Hato (鳩) - MVC PHP Mailer API implementation.
 
+![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
+
 ## 🦉 How to use?
 
 - first, rename `.env.example` to `.env` and fill data accordingly to your SMTP server setup.
 
 Then you can:
 1. deploy as a docker instance on your VPS and connect with frontend form. **or**
-2. upload the standalone package to your shared hosting. **or**
+2. upload the [standalone package](https://github.com/furudev/hato.ninja/releases/tag/v1.0.0) to your shared hosting. **or**
 3. Extend this package to suit your needs during local development. See [Development requirements](#🥚-development-requirements).
 
 ## 🔌 Endpoints
@@ -78,3 +80,8 @@ Returns a JSON response with message, validation informations, and status.
 - [x] use `Route` model inside `routes`
 - [x] reduce controllers and adjust controllers naming
 - [x] cleanup routes
+
+## 👏 Credits
+
+- [dunglas/frankenphp](https://github.com/dunglas/frankenphp)
+- [PHPMailer/PHPMailer](https://github.com/PHPMailer/PHPMailer)
