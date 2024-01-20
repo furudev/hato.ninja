@@ -15,16 +15,17 @@ Then you can:
 GET /api
 ```
 
-ℹ️: check if API is running properly.
+ℹ️ Check if API is running properly.
 returns a JSON response with message and status.
+
 
 ```
 POST /api/contact
 ```
 
-ℹ️: send message via contact from.
+ℹ️ Send message via contact from.
 
-required fields:
+Required fields:
 - `name`
 - `email`
 - `message`
