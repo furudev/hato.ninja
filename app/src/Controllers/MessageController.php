@@ -7,13 +7,14 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Models\Message;
 use App\Core\Response;
+use App\Core\Validator\Validator;
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\OAuth;
 use League\OAuth2\Client\Provider\Google;
 
 // TODO: Add proper e-mail address from shared hosting.
-// REFACTOR: Extract Validation to the separate class Validator.
 // REFACTOR: Simplify code
 // REFACTOR: Extract 
 
@@ -25,7 +26,10 @@ class MessageController extends Controller
       return;
     }
 
-    if (!empty($_POST['firstname'])) {
+    $validator = new Validator();
+
+    $validator->field('firstname', $_POST['firstname'])->empty();
+    if (!$validator->isValid()) {
       $this->response([
         'status' => Response::NOT_ALLOWED
       ]);
@@ -33,91 +37,76 @@ class MessageController extends Controller
       return;
     }
 
-    $errors = [];
-    $name = htmlspecialchars($_POST['name']);
-    if (is_null($name) || empty($name)) {
-      $errors['name']['message'] = 'Name must be filled.';
-    }
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $message = $_POST['message'];
 
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    if (!$email) {
-      $errors['email']['message'] = 'E-mail is considered not valid.';
-    }
+    $validator->field('name', $name)->text()->words()->max(Validator::MAX_SHORT_TEXT)->required();
+    $validator->field('email', $email)->email()->required();
+    $validator->field('message', $message)->text()->max(Validator::MAX_LONG_TEXT)->required();
 
-    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-
-    if (!$email) {
-      $errors['email']['message'] = 'E-mail is not valid.';
-    }
-
-    $message = htmlspecialchars($_POST['message']);
-
-    if (is_null($message) || empty($message)) {
-      $errors['message']['message'] = 'Message must be filled.';
-    }
-
-    if (count($errors) > 0) {
+    if (!$validator->isValid()) {
       $this->response([
-        'validation' => $errors,
+        'validation' => $validator->getErrors(),
         'status' => Response::NOT_ALLOWED,
       ]);
 
       return;
     }
 
-    $mail = new PHPMailer();
+    // $mail = new PHPMailer();
 
-    $mail->isSMTP();
-    $mail->SMTPDebug = SMTP::DEBUG_OFF;
+    // $mail->isSMTP();
+    // $mail->SMTPDebug = SMTP::DEBUG_OFF;
     
-    $mail->Host = $_ENV['MAIL_HOST'];
-    $mail->Port = $_ENV['MAIL_PORT'];
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->SMTPAuth = true;
-    $mail->AuthType = 'XOAUTH2';
-    $provider = new Google([
-      'clientId' => $_ENV['CLIENT_ID'],
-      'clientSecret' => $_ENV['CLIENT_SECRET'],
-    ]);
+    // $mail->Host = $_ENV['MAIL_HOST'];
+    // $mail->Port = $_ENV['MAIL_PORT'];
+    // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    // $mail->SMTPAuth = true;
+    // $mail->AuthType = 'XOAUTH2';
+    // $provider = new Google([
+    //   'clientId' => $_ENV['CLIENT_ID'],
+    //   'clientSecret' => $_ENV['CLIENT_SECRET'],
+    // ]);
 
-    $mail->setOAuth(new OAuth(
-      [
-        'provider' => $provider,
-        'clientId' => $_ENV['CLIENT_ID'],
-        'clientSecret' => $_ENV['CLIENT_SECRET'],
-        'refreshToken' => $_ENV['REFRESH_TOKEN'],
-        'userName' => $_ENV['MAIL_USERNAME'],
-      ]
-      ));
+    // $mail->setOAuth(new OAuth(
+    //   [
+    //     'provider' => $provider,
+    //     'clientId' => $_ENV['CLIENT_ID'],
+    //     'clientSecret' => $_ENV['CLIENT_SECRET'],
+    //     'refreshToken' => $_ENV['REFRESH_TOKEN'],
+    //     'userName' => $_ENV['MAIL_USERNAME'],
+    //   ]
+    //   ));
 
-    $mail->setFrom($_ENV['MAIL_FROM_EMAIL'], $_ENV['MAIL_FROM_NAME']);
-    $mail->addReplyTo($email);
-    $mail->addAddress($_ENV['MAIL_FROM_EMAIL'], $_ENV['MAIL_FROM_NAME']);
-    $mail->Subject = "Kontakt z ngr.studio";
-    $mail->isHTML();
+    // $mail->setFrom($_ENV['MAIL_FROM_EMAIL'], $_ENV['MAIL_FROM_NAME']);
+    // $mail->addReplyTo($email);
+    // $mail->addAddress($_ENV['MAIL_FROM_EMAIL'], $_ENV['MAIL_FROM_NAME']);
+    // $mail->Subject = "Kontakt z ngr.studio";
+    // $mail->isHTML();
 
-    $validFormData = [
-      'name' => $name,
-      'email' => $email,
-      'message' => $message,
-    ];
+    // $validFormData = [
+    //   'name' => $name,
+    //   'email' => $email,
+    //   'message' => $message,
+    // ];
     
-    $_SESSION['formData'] = $validFormData;
-    $mailTemplate = file_get_contents(__DIR__ . '/../Views/email/message.html');
+    // $_SESSION['formData'] = $validFormData;
+    // $mailTemplate = file_get_contents(__DIR__ . '/../Views/email/message.html');
 
-    foreach ($validFormData as $key => $value) {
-      $mailTemplate = preg_replace('/{{' . $key . '}}/', $value, $mailTemplate);
-    }
+    // foreach ($validFormData as $key => $value) {
+    //   $mailTemplate = preg_replace('/{{' . $key . '}}/', $value, $mailTemplate);
+    // }
 
-    $mail->Body = $mailTemplate;
+    // $mail->Body = $mailTemplate;
 
-    if (!$mail->send()) {
-      $this->response([
-        'message' => $mail->ErrorInfo,
-        'status' => Response::NOT_ALLOWED,
-      ]);
-      return;
-    }
+    // if (!$mail->send()) {
+    //   $this->response([
+    //     'message' => $mail->ErrorInfo,
+    //     'status' => Response::NOT_ALLOWED,
+    //   ]);
+    //   return;
+    // }
     
     $this->response([
       'message' => 'Message sent!',
@@ -137,7 +126,7 @@ class MessageController extends Controller
 
     $formData = $_SESSION['formData'];
 
-    $data = new Message(name: $formData['name'], email: $formData['email'], message: $formData['message']);
+    $data = new Message($formData['name'], $formData['email'], $formData['message']);
 
     $this->response([
       'data' => $data,
