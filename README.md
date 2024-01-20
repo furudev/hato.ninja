@@ -40,7 +40,7 @@ Returns a JSON response with message, validation informations, and status.
 2. Composer [How to install](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos)
 3. **Optional**: mkcert [How to install](https://github.com/FiloSottile/mkcert?tab=readme-ov-file#installation)
 
-## 🐣 Setup for development
+## 🐣 Setup for local development
 
 1. Clone the repository
 2. Go to `/docker`. Run `docker compose up -d` to create docker development container.
