@@ -13,15 +13,16 @@ Then you can:
 
 ```
 GET /api
-
-[i]: check if API is running properly.
-
-return JSON response with message and status.
 ```
+
+ℹ️: check if API is running properly.
+returns a JSON response with message and status.
 
 ```
 POST /api/contact
-[i]: send message from contact from.
+```
+
+ℹ️: send message via contact from.
 
 required fields:
 - `name`
@@ -29,9 +30,7 @@ required fields:
 - `message`
 - `subject`
 
-return JSON response with message, validation informations, and status.
-```
-
+returns a JSON response with message, validation informations, and status.
 
 ## 🥚 Development requirements
 
