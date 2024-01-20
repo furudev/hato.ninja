@@ -1,8 +1,15 @@
 # 🐦‍⬛ Hato (鳩) - MVC PHP Mailer API implementation.
 
-## 🐣 Setup
+## 🦉 How to use?
 
-## Endpoints
+- first, rename `.env.example` to `.env` and fill data accordingly to your SMTP server setup.
+
+Then you can:
+1. deploy as a docker instance on your VPS and connect with frontend form. **or**
+2. upload the standalone package to your shared hosting. **or**
+3. Extend this package to suit your needs during local development. See [Development requirements](#🥚-development-requirements).
+
+## 🔌 Endpoints
 
 ```
 GET /api
