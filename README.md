@@ -11,7 +11,7 @@ Then you can:
 
 ## 🔌 Endpoints
 
-```
+```bash
 GET /api
 ```
 
@@ -20,7 +20,7 @@ GET /api
 Returns a JSON response with message and status.
 
 
-```
+```bash
 POST /api/contact
 ```
 
