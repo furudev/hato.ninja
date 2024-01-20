@@ -5,18 +5,11 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Models\Message;
+use App\Core\Mailer\Mailer;
 use App\Core\Response;
 use App\Core\Validator\Validator;
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\OAuth;
-use League\OAuth2\Client\Provider\Google;
-
-// TODO: Add proper e-mail address from shared hosting.
-// REFACTOR: Simplify code
-// REFACTOR: Extract 
+use App\Models\Message;
+use Exception;
 
 class MessageController extends Controller
 {
@@ -37,13 +30,16 @@ class MessageController extends Controller
       return;
     }
 
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $message = $_POST['message'];
+    $message = new Message(
+      name: $_POST['name'],
+      email: $_POST['email'],
+      message: $_POST['message'],
+      subject: $_ENV['MAIL_SUBJECT'],
+    );
 
-    $validator->field('name', $name)->text()->words()->max(Validator::MAX_SHORT_TEXT)->required();
-    $validator->field('email', $email)->email()->required();
-    $validator->field('message', $message)->text()->max(Validator::MAX_LONG_TEXT)->required();
+    $validator->field('name', $message->name)->text()->words()->max(Validator::MAX_SHORT_TEXT)->required();
+    $validator->field('email', $message->email)->email()->required();
+    $validator->field('message', $message->message)->text()->max(Validator::MAX_LONG_TEXT)->required();
 
     if (!$validator->isValid()) {
       $this->response([
@@ -54,83 +50,20 @@ class MessageController extends Controller
       return;
     }
 
-    // $mail = new PHPMailer();
+    $mailer = new Mailer(subject: $message->subject, to: $message->email, template: 'message.html');
 
-    // $mail->isSMTP();
-    // $mail->SMTPDebug = SMTP::DEBUG_OFF;
-    
-    // $mail->Host = $_ENV['MAIL_HOST'];
-    // $mail->Port = $_ENV['MAIL_PORT'];
-    // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    // $mail->SMTPAuth = true;
-    // $mail->AuthType = 'XOAUTH2';
-    // $provider = new Google([
-    //   'clientId' => $_ENV['CLIENT_ID'],
-    //   'clientSecret' => $_ENV['CLIENT_SECRET'],
-    // ]);
+    try {
+      $mailer->variables($message->entries())->send();
 
-    // $mail->setOAuth(new OAuth(
-    //   [
-    //     'provider' => $provider,
-    //     'clientId' => $_ENV['CLIENT_ID'],
-    //     'clientSecret' => $_ENV['CLIENT_SECRET'],
-    //     'refreshToken' => $_ENV['REFRESH_TOKEN'],
-    //     'userName' => $_ENV['MAIL_USERNAME'],
-    //   ]
-    //   ));
-
-    // $mail->setFrom($_ENV['MAIL_FROM_EMAIL'], $_ENV['MAIL_FROM_NAME']);
-    // $mail->addReplyTo($email);
-    // $mail->addAddress($_ENV['MAIL_FROM_EMAIL'], $_ENV['MAIL_FROM_NAME']);
-    // $mail->Subject = "Kontakt z ngr.studio";
-    // $mail->isHTML();
-
-    // $validFormData = [
-    //   'name' => $name,
-    //   'email' => $email,
-    //   'message' => $message,
-    // ];
-    
-    // $_SESSION['formData'] = $validFormData;
-    // $mailTemplate = file_get_contents(__DIR__ . '/../Views/email/message.html');
-
-    // foreach ($validFormData as $key => $value) {
-    //   $mailTemplate = preg_replace('/{{' . $key . '}}/', $value, $mailTemplate);
-    // }
-
-    // $mail->Body = $mailTemplate;
-
-    // if (!$mail->send()) {
-    //   $this->response([
-    //     'message' => $mail->ErrorInfo,
-    //     'status' => Response::NOT_ALLOWED,
-    //   ]);
-    //   return;
-    // }
-    
-    $this->response([
-      'message' => 'Message sent!',
-      'status' => Response::OK,
-    ]);
-  }
-
-  public function get()
-  {
-    if (!isset($_SESSION['formData'])) {
       $this->response([
-        'message' => 'No form data found.',
+        'message' => 'Message sent successfully',
         'status' => Response::OK,
       ]);
-      return;
+    } catch (Exception $exception) {
+      $this->response([
+        'message' => $exception->getMessage(),
+        'status' => Response::NOT_ALLOWED,
+      ]);
     }
-
-    $formData = $_SESSION['formData'];
-
-    $data = new Message($formData['name'], $formData['email'], $formData['message']);
-
-    $this->response([
-      'data' => $data,
-      'status' => Response::OK,
-    ]);
   }
 }

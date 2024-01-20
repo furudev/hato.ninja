@@ -6,7 +6,6 @@ namespace App\Core\Validator;
 
 use App\Core\Validator\Exceptions\InvalidFieldException;
 
-
 class Validator {
   private array $errors = [];
   private string $field;
