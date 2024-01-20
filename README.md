@@ -16,7 +16,8 @@ GET /api
 ```
 
 ℹ️ Check if API is running properly.
-returns a JSON response with message and status.
+
+Returns a JSON response with message and status.
 
 
 ```
@@ -31,7 +32,7 @@ Required fields:
 - `message`
 - `subject`
 
-returns a JSON response with message, validation informations, and status.
+Returns a JSON response with message, validation informations, and status.
 
 ## 🥚 Development requirements
 
