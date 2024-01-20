@@ -8,12 +8,13 @@ use App\Core\JSON;
 
 class Controller
 {
-  protected function render(string $view, ?array $attributes = [])
-  {
-    view($view, $attributes);
-  }
+  // [i]: uncomment to enable debugging with form.view.php on `/form` route.
+  // protected function render(string $view, ?array $attributes = [])
+  // {
+  //   view($view, $attributes);
+  // }
 
-  protected function response(mixed $data)
+  protected function response(array $data)
   {
     $json = new JSON();
 

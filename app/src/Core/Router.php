@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use App\Models\Route;
+
 class Router
 {
-  protected $routes = [];
+  protected array $routes = [];
 
-  public function addRoute(string $route, mixed $controller, string $action): void
+  public function addRoute(Route $route): void
   {
-    $this->routes[$route] = [
-      'controller' => $controller,
-      'action' => $action,
+    $this->routes[$route->path] = [
+      'controller' => $route->controller,
+      'action' => $route->action,
     ];
   }
 

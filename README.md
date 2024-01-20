@@ -19,5 +19,7 @@
 - [x] cleanup `MessageController`
 - [x] add `.env.example`
 - [x] send test e-mail message
-- [ ] reduce controllers and adjust controllers naming
-- [ ] cleanup routes
+- [x] add `Route` model
+- [x] use `Route` model inside `routes`
+- [x] reduce controllers and adjust controllers naming
+- [x] cleanup routes

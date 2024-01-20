@@ -12,7 +12,7 @@ class IndexController extends Controller
   public function index()
   {
     $response = [
-      'message' => 'Index page',
+      'message' => 'Hato.ninja API is working properly',
       'status'  => Response::OK,
     ];
 

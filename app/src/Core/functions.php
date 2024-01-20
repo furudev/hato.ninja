@@ -4,45 +4,10 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-use App\Core\JSON;
-use App\Core\Response;
+// [i]: uncomment to enable debugging with form.view.php on `/form` route.
+// function view(string $path, array $attributes = []): void
+// {
+//   extract($attributes);
 
-function dd(mixed $value): void
-{
-  echo "<pre>";
-  var_dump($value);
-  echo "</pre>";
-
-  die();
-}
-
-function urlIs(string $value): bool
-{
-  return $_SERVER['REQUEST_URI'] === $value;
-}
-
-function base_path(string $path): string
-{
-  return BASE_PATH . $path;
-}
-
-function abort(int $code = 404): void
-{
-  http_response_code($code);
-
-  $data = [
-    'status' => Response::FORBIDDEN,
-  ];
-
-  $json = new JSON();
-
-  $json->response($data);
-  die();
-}
-
-function view(string $path, array $attributes = []): void
-{
-  extract($attributes);
-
-  require_once base_path("views/$path");
-}
+//   require_once BASE_PATH . "views/$path";
+// }

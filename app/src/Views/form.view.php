@@ -6,14 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form | <?php echo $_ENV['APP_NAME'] ?></title>
 </head>
-<!--
-  text: name;
-  email: email;
-  textarea: message;
--->
 
 <body>
-  <form style="display: flex; flex-direction: column; max-width: 600px; margin: 0 auto;" method="POST" action="/api/message/send">
+  <form style="display: flex; flex-direction: column; max-width: 600px; margin: 0 auto;" method="POST" action="/api/contact">
     <input type="hidden" name="firstname">
     <label for="name">Imię</label>
     <input type="text" name="name" id="name" placeholder="Stefan" value="Stefan">
