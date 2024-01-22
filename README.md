@@ -48,7 +48,7 @@ Returns a JSON response with message, validation informations, and status.
 2. Go to `/docker`. Run `docker compose up -d` to create docker development container.
 3. Go to `/app`. Run `composer install` to install all composer dependencies, after that just access your `localhost` as usually.
 4. **Optional:** If you want to use local SSL proxy:
-- Go to `/certs`. Run `mkcert -install` to install local certificates.
+- Go to `/certs`. Run `mkcert hato.ninja` to generate and install local certificates.
 - Run `sudo vi /etc/hosts` and add this line at the end of the file:
 ```
 127.0.0.1 hato.ninja
