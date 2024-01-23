@@ -80,8 +80,8 @@ Returns a JSON response with message, validation informations, and status.
 - [x] use `Route` model inside `routes`
 - [x] reduce controllers and adjust controllers naming
 - [x] cleanup routes
-- [x] create Services to simplify controllers
-- [x] apply one controller one response pattern
+- [ ] create Services to simplify controllers
+- [ ] apply one controller one response pattern
 
 ## 👏 Credits
 
