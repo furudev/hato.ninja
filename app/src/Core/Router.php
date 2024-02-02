@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use App\Core\Json;
 use App\Models\Route;
 
 class Router
@@ -21,7 +22,7 @@ class Router
   public function dispatch(string $uri)
   {
     if (!array_key_exists($uri, $this->routes)) {
-      $json = new JSON();
+      $json = new Json();
       $json->response(['status' => Response::NOT_FOUND]);
     }
 

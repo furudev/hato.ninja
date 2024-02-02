@@ -22,13 +22,16 @@ class ContactController extends Controller
 
     $validator = new Validator();
 
-    $validator->field('firstname', $_POST['firstname'])->empty();
-    if (!$validator->isValid()) {
-      $this->response([
-        'status' => Response::NOT_ALLOWED
-      ]);
-      die();
-      return;
+    if (isset($_POST['firstname'])) {
+      $validator->field('firstname', $_POST['firstname'])->empty();
+
+      if (!$validator->isValid()) {
+        $this->response([
+          'status' => Response::NOT_ALLOWED
+        ]);
+        die();
+        return;
+      }
     }
 
     $message = new Message(

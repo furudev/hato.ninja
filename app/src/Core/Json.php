@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-class JSON
+class Json
 {
   public function __construct()
   {

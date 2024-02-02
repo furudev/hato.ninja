@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Core;
 
-use App\Core\JSON;
+use App\Core\Json;
 
 class Controller
 {
@@ -16,7 +16,7 @@ class Controller
 
   protected function response(array $data)
   {
-    $json = new JSON();
+    $json = new Json();
 
     $json->response($data);
   }
